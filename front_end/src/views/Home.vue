@@ -21,7 +21,9 @@
 
         Recommended Videos
         <div class="innerdiv">
-
+            <iframe src="https://www.youtube.com/embed/ctx4YBEdOxo" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/vMPR7k9DWlw" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/u5V_VzRrSBI" allowfullscreen></iframe>
         </div>
     </div>
 
