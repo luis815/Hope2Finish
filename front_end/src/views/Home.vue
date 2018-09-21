@@ -6,8 +6,9 @@
     <div class="topnav">
         <input type="text" placeholder="Search..">
     </div>
-
-
+        <div class = "rightnav">
+            Welcome KyrosUser!
+        </div>
     <div class="leftcolDiv">
         <div class="YTvid">
             <iframe width="560" height="349" src="https://www.youtube.com/embed/I7LJIuB2CHE"
@@ -18,8 +19,7 @@
     </div>
 
     <div class="rightcolDiv">
-
-        Recommended Videos
+        Recent Uploads
         <div class="innerdiv">
             <iframe src="https://www.youtube.com/embed/ctx4YBEdOxo" allowfullscreen></iframe>
             <iframe src="https://www.youtube.com/embed/vMPR7k9DWlw" allowfullscreen></iframe>
@@ -49,7 +49,7 @@
     }
     .rightcolDiv {
         float: right;
-        margin: -35% 8% 1% 1%;
+        margin: 0% -5% 1% 1%;
         padding: 1%;
         width: 39%;
     }
@@ -63,10 +63,16 @@
         font-size: 17px;
         width: 35%;
     }
+    .rightnav{
+        float: right;
+        margin-top: -6%;
+        margin-right: 1%;
+        font-size: 120%;
+    }
     .innerdiv {
         border: 5px outset;
         box-shadow : 2px 10px 10px #888888;
-        margin: 1% 1% 5% 15%;
+        margin: 1% -10% 1% 15%;
         padding: 7%;
         width: 50%
     }
