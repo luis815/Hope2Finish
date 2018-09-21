@@ -1,6 +1,11 @@
 <?php
 
-namespace REGISTERATION;
+/*
+	PLEASE NOTE: Due to reason(s) unknown, GitHub has decided to use one of my aliases used for a completely different
+	account of mine, instead of my real name. The alias "Michael Belker" is actually myself, "Christopher Pei". :)
+*/
+
+namespace REGISTRATION;
 
 define(__NAMESPACE__ . "\LOG_NAME", __DIR__ . DIRECTORY_SEPARATOR . __NAMESPACE__ . ".log");
 define(__NAMESPACE__ . "\LOGGING", false);
@@ -65,7 +70,7 @@ button {
 
 ';
 
-$html_begin = '<html><head><title>Register | FALL_2018_CSE442</title>' . $external_css . '<style> ' . $css . '</style></head><body>';
+$html_begin = '<html><head><title>Register | FALL_2018_CSE442_CHRISTOPHER_PEI</title>' . $external_css . '<style> ' . $css . '</style></head><body>';
 $html_end = '</body></html>';
 $html_error_begin = '<div id="error">';
 $html_error_end = '</div>';
