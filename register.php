@@ -1,5 +1,22 @@
 <?php
 
+namespace REGISTERATION;
+
+define(__NAMESPACE__ . "\LOG_NAME", __DIR__ . DIRECTORY_SEPARATOR . __NAMESPACE__ . ".log");
+define(__NAMESPACE__ . "\LOGGING", false);
+
+define(__NAMESPACE__ . "\MIN_USERNAME_LENGTH", 3);
+define(__NAMESPACE__ . "\MAX_USERNAME_LENGTH", 32);
+define(__NAMESPACE__ . "\MIN_PASSWORD_LENGTH", 3);
+define(__NAMESPACE__ . "\MAX_PASSWORD_LENGTH", 255);
+
+
+//	VARS
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+
 $external_css = '<link rel="stylesheet" href="https://cdn.dbmxpca.com/fonts/stylesheet.css" type="text/css" charset="utf-8" />';
 
 $css = 
@@ -9,20 +26,7 @@ body {
 	
 	font-family: \'Helvetica Rounded LT Std\';
     font-weight: bold;
-    font-style: normal;
-	
-	/*
-	font-family: \'Helvetica LT Std\';
-	font-weight: bold;
-    font-style: normal;
-	*/
-	
-	/*
-	font-family: \'ChaletComprime-CologneSixty\';
-    font-weight: normal;
-    font-style: normal;
-	*/
-	
+    font-style: normal;	
 }
 
 label {
@@ -33,15 +37,12 @@ label {
 	width: 150px;
 	text-align: right;
 	margin-right: 10px;
-	/* margin-top: 5px; */
-	/* margin-bottom: 5px; */
 }
 
 input {
 	
 	display: block;
 	margin-bottom: 10px;
-	/* float: left; */
 }
 
 button {
@@ -84,6 +85,85 @@ $form_signup =
 	</fieldset>
 </form>
 ';
+
+//	FUNCTIONS
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+
+//	@summary	Checks if $data contains $search.
+//	@return		Returns true if $search is in $data.
+function CONTAINS($data, $search){
+	if( strpos($data, $search) !== false ) return true;
+	return false;
+}
+
+
+//	@summary	Checks if a form was submitted with any data. Does not check validity of input.
+//	@return		Returns true if form was submitted with any data.
+function WAS_FORM_SUBMITTED(){
+	
+	if (
+		isset($_REQUEST['email']) ||
+		isset($_REQUEST['username']) ||
+		isset($_REQUEST['password1']) ||
+		isset($_REQUEST['password2'])
+		) return true;
+		return false;
+}
+
+//	@summary	Checks if submitted form data is valid.
+//	@return		Returns true if form was submitted with valid data.
+//	@$error		This return var indicates reason for invalid data (0 = missing/blank fields; 1 = invalid email; ... )
+function IS_FORM_DATA_VALID(&$error){
+	
+	$result = false;
+	
+	//	Ensure fields are set and not blank.
+	if (!isset($_REQUEST['email']) || empty($_REQUEST['email']) ||
+		!isset($_REQUEST['username']) || empty($_REQUEST['username']) ||
+		!isset($_REQUEST['password1']) || empty($_REQUEST['password1']) ||
+		!isset($_REQUEST['password2']) || empty($_REQUEST['password2'])){
+		
+		$error = 0;
+		return false;
+	}
+	
+	//	Does the email address have the "@" character? Is the email address at least least 3-characters long?
+	if (!CONTAINS($_REQUEST['email'], "@") ||
+		strlen($_REQUEST['email']) < 3){
+			
+		$error = 1;
+		return false;
+	}
+	
+	//	Does username meet minimum length requirements?
+	
+	
+	
+	//	Does password meet minimum length requirements?
+	
+	
+	//	Do both password fields match?
+	
+	
+	
+}
+
+
+
+//	SCRIPT BEGINS
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+
+//	Check if all fields have been submitted.
+
+
+
+
 
 
 echo $html_begin;
