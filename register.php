@@ -1,13 +1,6 @@
 <?php
 
 /*
-	   __  __     
-	  / _|/ _|    
-	 | |_| |_ ___ 
-	 |  _|  _/ __|
-	 | | | | \__ \
-	 |_| |_| |___/
-
 	PLEASE NOTE: Due to reason(s) unknown, GitHub has decided to use one of my aliases used for a completely different
 	account of mine, instead of my real name. The alias "Michael Belker" is actually myself, "Christopher Pei".
 */
