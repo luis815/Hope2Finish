@@ -2,7 +2,7 @@
     <div id="LandingPage">
         <ul>
             <li><router-link to="/login">login</router-link></li>
-            <li><router-link to="/sigup">signup</router-link></li>
+            <li><router-link to="/signup">signup</router-link></li>
         </ul>
         <div id="welcome">
             <h1>Welcome to Kyros!</h1>
