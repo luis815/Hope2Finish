@@ -4,6 +4,10 @@
     <div id="LandingPage">
         <center><h1>Kyros</h1></center>
         <center><p>Kyros a unique content creator oriented platform</p></center>
+        <div id="nav">
+            <center><router-link to="/login">login</router-link></center>
+            <center><router-link to="/signup">register</router-link></center>
+        </div>
         <form>
         <center>
   		User name:<br>
@@ -27,8 +31,12 @@
 </script>
 
 <style scoped>
-    #LandingPage { 
+    #LandingPage {
 
 
+    }
+
+    #nav {
+        background: whitesmoke;
     }
 </style>
