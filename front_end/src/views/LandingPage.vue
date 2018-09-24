@@ -1,8 +1,23 @@
 <template>
+<body style="background-color:grey;">
+<font color="50c878">
     <div id="LandingPage">
-        <h1>Hello World!</h1>
-        <p>This is our cse442 project.</p>
+        <center><h1>Kyros</h1></center>
+        <center><p>Kyros a unique content creator oriented platform</p></center>
+        <form>
+        <center>
+  		User name:<br>
+  		<input type="text" name="Username"><br>
+  		Password:<br>
+  		<input type="text" name="password">
+  		<p>
+  		<A HREF="https://www.youtube.com/" style="color: #50c878">New User?</A>
+  		</p>
+		</center>
+		</form>
     </div>
+</font>
+</body>
 </template>
 
 <script>
@@ -12,7 +27,8 @@
 </script>
 
 <style scoped>
-    #LandingPage {
+    #LandingPage { 
+
 
     }
 </style>
