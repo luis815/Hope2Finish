@@ -7,7 +7,7 @@
         <input type="text" placeholder="Search..">
     </div>
         <div class = "rightnav">
-            Welcome KyrosUser!
+            Welcome <router-link to="/profile">KyrosUser!</router-link>
         </div>
     <div class="leftcolDiv">
         <div class="YTvid">
@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        name: "Kyros Home"
+        name: "Home"
     }
 </script>
 
