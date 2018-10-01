@@ -40,10 +40,6 @@
 </script>
 
 <style scoped>
-    @import url("https://unpkg.com/spectre.css/dist/spectre.min.css");
-    @import url("https://unpkg.com/spectre.css/dist/spectre-exp.min.css");
-    @import url("https://unpkg.com/spectre.css/dist/spectre-icons.min.css");
-
     #login {
         padding-top: 5rem;
     }
