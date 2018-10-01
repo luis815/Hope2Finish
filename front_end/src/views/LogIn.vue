@@ -1,24 +1,28 @@
 <template>
-    <div id="login">
+    <div id="login" class="d-flex align-items-center bg-dark">
         <div class="container">
-            <div class="columns">
-                <div class="column col-4 col-sm-10 col-lg-6 col-mx-auto">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title h5">Log In</div>
-                            <div class="card-subtitle text-gray">Kyros</div>
-                        </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <div class="card text-left">
                         <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label" for="input-username">Username</label>
-                                <input class="form-input" type="text" spellcheck="false" id="input-username"
-                                       placeholder="Username">
-                                <label class="form-label" for="input-password">Password</label>
-                                <input class="form-input" type="password" id="input-password" placeholder="Password">
+                            <div class="text-center">
+                                <h5 class="card-title">LogIn</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Arkild</h6>
                             </div>
-                        </div>
-                        <div class="card-footer">
-                            <button v-on:click="login" class="btn btn-primary">Log In</button>
+                            <form>
+                                <div class="form-group">
+                                    <label for="inputUsername">Username</label>
+                                    <input type="text" class="form-control" id="inputUsername"
+                                           aria-describedby="usernameHelp"
+                                           placeholder="Enter username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="password" class="form-control" id="inputPassword"
+                                           placeholder="Password">
+                                </div>
+                                <button type="submit" v-on:click="login" class="btn btn-primary">LogIn</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -41,6 +45,7 @@
 
 <style scoped>
     #login {
-        padding-top: 5rem;
+        height: 100%;
+        overflow: scroll;
     }
 </style>
