@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import SampleHome from './views/SampleHome.vue'
 import LandingPage from './views/LandingPage.vue'
 import Profile from './views/Profile.vue'
+import ProfileEditor from './views/ProfileEditor.vue'
 import LogIn from './views/LogIn.vue'
 import SignUp from './views/SignUp.vue'
 import Home from './views/Home.vue'
@@ -37,6 +38,11 @@ export default new Router({
             path: '/profile',
             name: 'profile',
             component: Profile
+        },
+        {
+            path: '/ProfileEditor',
+            name: 'ProfileEditor',
+            component: ProfileEditor
         },
         {
             path: '/sample-home',
