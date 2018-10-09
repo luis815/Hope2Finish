@@ -346,16 +346,16 @@ function DB_INIT(){
 //	------------------------------------------------------------------------------------------------------------
 
 //	Initialize the database.
-DB_INIT();
+// DB_INIT();
 
 //	Create sample user account.
-CREATE_USER("user12345", "hashedpasswd", "passwordsalt", "test_email@something.com");
+// CREATE_USER("user12345", "hashedpasswd", "passwordsalt", "test_email@something.com");
 
 //	Attempt to create another user with the same username (this should fail).
-CREATE_USER("user12345", "hashedpasswd2", "passwordsalt2", "test_email2@something.com");
+// CREATE_USER("user12345", "hashedpasswd2", "passwordsalt2", "test_email2@something.com");
 
 //	Create another sample user account.
-CREATE_USER("user67890", "hashedpasswd2", "passwordsalt2", "test_email2@something.com");
+// CREATE_USER("user67890", "hashedpasswd2", "passwordsalt2", "test_email2@something.com");
 
 
 
