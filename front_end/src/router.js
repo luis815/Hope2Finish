@@ -6,6 +6,8 @@ import Profile from './views/Profile.vue'
 import LogIn from './views/LogIn.vue'
 import SignUp from './views/SignUp.vue'
 import Home from './views/Home.vue'
+import Upload from './views/Upload.vue'
+import Watch from './views/Watch.vue'
 
 Vue.use(Router);
 
@@ -37,6 +39,16 @@ export default new Router({
             path: '/profile',
             name: 'profile',
             component: Profile
+        },
+        {
+            path: '/upload',
+            name: 'upload',
+            component: Upload
+        },
+        {
+            path: '/watch',
+            name: 'watch',
+            component: Watch
         },
         {
             path: '/sample-home',
