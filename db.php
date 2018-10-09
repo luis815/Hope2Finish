@@ -120,6 +120,9 @@ function CREATE_USER($username, $password, $salt, $email){
 	$error_count = 0;
 	$warning_count = 0;
 	
+	//	Set custom return value.
+	$return = 0;
+	
 	//	NOTE: "execute()" used for PREAPARED statements; otherwise only use "exec()".
 	
 	\SYSTEM\LOG("INFO", "Starting " . $operation_name . "...");
@@ -138,6 +141,8 @@ function CREATE_USER($username, $password, $salt, $email){
 	
 	try{
 		
+		$tableName = "users";
+		
 		\SYSTEM\LOG("INFO", "----------------------------------------------------------------------");
 		\SYSTEM\LOG("INFO", "This operation will attempt to create the following user account:");
 		\SYSTEM\LOG("INFO", " -- Username[\"" . $username . "\"]");
@@ -148,31 +153,54 @@ function CREATE_USER($username, $password, $salt, $email){
 		\SYSTEM\LOG("INFO", "Opening/creating database \"" .  DB_NAME  .  "\"...");
 		$db = new \PDO('sqlite:' . DB_NAME);
 		
-		//	Prepare an INSERT statement.
-		$tableName = "users";
-		$insert = "INSERT INTO " . $tableName . " (username, password, salt, email) VALUES (:username, :password, :salt, :email)";
-		$statement = $db->prepare($insert);
+		//	Perform a SELECT query to see if a user account with the same username already exists.
+		$select = "SELECT id from " . $tableName . " WHERE username=:username";
+		$statement = $db->prepare($select);
 		
 		//	Bind appropriate parameters to statement vars.
-		$statement->bindParam(':username', $username);
-		$statement->bindParam(':password', $password);
-		$statement->bindParam(':salt', $salt);
-		$statement->bindParam(':email', $email);
+		$statement->bindValue(':username', $username, \PDO::PARAM_STR);
 		
-		//	Execute.
-		switch($statement->execute()){
+		//	Execute
+		$statement->execute();
+		
+		//	Fetch the data.
+		$r = $statement->fetchAll();	
+		if (isset($r[0]["id"])){
 			
-			case TRUE:
-				$success_count++;
-				\SYSTEM\LOG("INFO", "User account successfully created.");
-				break;
-			default:
-				$error_count++;
-				\SYSTEM\LOG("ERROR", "Failed to create user account.");
-				break;
+			$error_count++;
+			$return = 2;
+			\SYSTEM\LOG("ERROR", "A user account with the same username (id: " . $r[0]["id"] . ") already exists.");
 		}
 		
-		
+		//	Proceed to account creation ONLY if there are NO errors or warnings.
+		if ($error_count === 0 && $warning_count === 0){
+			
+			//	Reset.
+			$statement->closeCursor();
+			
+			//	Prepare an INSERT statement.
+			$insert = "INSERT INTO " . $tableName . " (username, password, salt, email) VALUES (:username, :password, :salt, :email)";
+			$statement = $db->prepare($insert);
+			
+			//	Bind appropriate parameters to statement vars.
+			$statement->bindParam(':username', $username);
+			$statement->bindParam(':password', $password);
+			$statement->bindParam(':salt', $salt);
+			$statement->bindParam(':email', $email);
+			
+			//	Execute.
+			switch($statement->execute()){
+				
+				case TRUE:
+					$success_count++;
+					\SYSTEM\LOG("INFO", "User account successfully created.");
+					break;
+				default:
+					$error_count++;
+					\SYSTEM\LOG("ERROR", "Failed to create user account.");
+					break;
+			}
+		}
 		
 		//	Close DB.
 		\SYSTEM\LOG("INFO", "Closing database connection...");
@@ -188,14 +216,15 @@ function CREATE_USER($username, $password, $salt, $email){
 		
 	}catch(PDOException $e){
 		
+		$return = 1;
 		\SYSTEM\LOG("EXCEPTION", $e->getMessage());
 		$error_count++;
 		\SYSTEM\LOG("INFO", "============ " . $operation_name . ": " . $success_count . " succeeded, " . $error_count . " failed, " . $warning_count . " warning(s) ============");
-		return 1;
+		return $return;
 	}
 	
 	\SYSTEM\LOG("INFO", "============ " . $operation_name . ": " . $success_count . " succeeded, " . $error_count . " failed, " . $warning_count . " warning(s) ============");
-	return 0;
+	return $return;
 	
 }
 
@@ -230,10 +259,10 @@ function DB_INIT(){
 		//	however, I discovered it to consistently return a value of 0 on success.
 		$result = $db->exec("CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
 																			`id` INTEGER PRIMARY KEY,
-																			`username` TEXT,
+																			`username` TEXT COLLATE NOCASE,
 																			`password` TEXT,
 																			`salt` TEXT,
-																			`email` TEXT
+																			`email` TEXT COLLATE NOCASE
 																			)");
 		
 		//	##########################################################
@@ -316,9 +345,17 @@ function DB_INIT(){
 //	------------------------------------------------------------------------------------------------------------
 //	------------------------------------------------------------------------------------------------------------
 
-// DB_INIT();
+//	Initialize the database.
+DB_INIT();
 
+//	Create sample user account.
 CREATE_USER("user12345", "hashedpasswd", "passwordsalt", "test_email@something.com");
+
+//	Attempt to create another user with the same username (this should fail).
+CREATE_USER("user12345", "hashedpasswd2", "passwordsalt2", "test_email2@something.com");
+
+//	Create another sample user account.
+CREATE_USER("user67890", "hashedpasswd2", "passwordsalt2", "test_email2@something.com");
 
 
 
