@@ -1,5 +1,5 @@
 <template>
-    <div id="LandingPage">
+    <div id="LandingPage" class="bg-dark">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <router-link class="navbar-brand" to="/">Kyros</router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -17,10 +17,10 @@
                 </ul>
             </div>
         </nav>
-        <section id="welcome" class="text-center">
+        <section id="welcome" class="text-center text-white">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm" id="welcome-msg">
+                    <div class="col-sm d-flex align-items-center">
                         <div id="welcome-msg-wrapper">
                             <h1 class="display-3">Upload your content.</h1>
                             <h3>Connect with your community.</h3>
@@ -43,7 +43,6 @@
 
 <style scoped>
     #LandingPage {
-        background: #191919;
         height: 100%;
         overflow: scroll;
     }
@@ -51,12 +50,6 @@
     #welcome {
         padding-top: 5em;
         padding-bottom: 5em;
-        color: whitesmoke;
-    }
-
-    #welcome-msg {
-        display: flex;
-        align-items: center;
     }
 
     #welcome img {
