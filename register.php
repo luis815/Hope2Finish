@@ -330,7 +330,15 @@ if (WAS_FORM_SUBMITTED()){
 		$_SESSION['error_message'] .= " Please try again.";
 	}
 	
-	else $_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been (hypothetically) created.<br>Hypothetically, you will be able to click <a href=\"#\">here</a> to login.</h4>";
+	else{
+	
+		//	Create user account.
+		
+		$_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been (hypothetically)
+ created.<br>Hypothetically, you will be able to click <a href=\"#\">here</a> to login.</h4>";
+ 
+ 
+	}
 		
 	echo $html_begin;
 	echo $form_signup;
