@@ -7,6 +7,7 @@
 
 namespace REGISTRATION;
 
+require_once "system.php";
 require_once "db.php";
 
 //	CONSTANTS
@@ -175,7 +176,7 @@ function IS_FORM_DATA_VALID(&$error){
 	$t_u = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_u));
 	
 	//	Does the email address have the "@" character? Is the email address at least least 3-characters long?
-	if (!CONTAINS($t_e, "@") ||
+	if (!\SYSTEM\CONTAINS($t_e, "@") ||
 		strlen($t_e) < 3){
 			
 		$error = 1;
@@ -258,6 +259,12 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 	if (strlen($t_p) > MAX_PASSWORD_LENGTH)
 		$password = TRUNCATE($t_p, MAX_PASSWORD_LENGTH);
 	
+	
+	//	"Return" the sanitized values.
+	$email = $t_e;
+	$username = $t_u;
+	$password = $t_p;
+	
 	return true;
 }
 
@@ -303,11 +310,48 @@ if (WAS_FORM_SUBMITTED()){
 	
 		//	Create user account.
 		
-		//	Get form data.
-		$email = $username = $password = $salt = "";
-		GET_FORM_DATA($email, $username, $password);
+		$error_count = 0;
 		
-		$salt = "SAMPLE_SALT";
+		//	Get form data.
+		\SYSTEM\LOG("INFO", "Fetching registration form data...");
+		$email = $username = $password = "";
+		GET_FORM_DATA($email, $username, $password) ? \SYSTEM\LOG("INFO", "... [OK]") : \SYSTEM\LOG("ERROR", "... [FAILED]");
+		
+		//	Hash the password.
+		\SYSTEM\LOG("INFO", "Generating password hash...");
+		$password_hash = \SYSTEM\GENERATE_PASSWORD_HASH($password);
+		
+		if ($password_hash === FALSE){
+			
+			$error_count++;
+			\SYSTEM\LOG("INFO", "... [FAILED]");
+		}
+		else
+			\SYSTEM\LOG("INFO", "... [OK]");
+		
+		
+		if ($error_count == 0){
+			
+			$salt = "-";	//	Temporary.
+			
+			switch(\DB\CREATE_USER($username, $password_hash, $salt, $email)){
+				
+				case 0:	//	Success.
+					$_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been created.<br>Click <a href=\"#\">here</a> to login.</h4>";
+					break;
+				case 2:	//	Account already exists.
+					$error_count++;
+					$_SESSION['error_message'] = "<h3 style=\"color:rgb(180,0,0);\">Sorry!</h3><h4 style=\"color:rgb(180,0,0);\"> An account with that username already exists.<br>Existing users can click <a href=\"#\">here</a> to login.</h4>";
+					break;
+				default:	//	General error.
+					$error_count++;
+					$_SESSION['error_message'] = "<h3 style=\"color:rgb(180,0,0);\">Sorry!</h3><h4 style=\"color:rgb(180,0,0);\"> Account creation failed.</h4>";
+					break;
+				
+			}
+		}
+		
+		//$salt = "SAMPLE_SALT";
 		
 		//$result = CREATE
 		
@@ -315,8 +359,7 @@ if (WAS_FORM_SUBMITTED()){
 		
 		
 		
-		$_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been (hypothetically)
- created.<br>Hypothetically, you will be able to click <a href=\"#\">here</a> to login.</h4>";
+		// $_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been (hypothetically) created.<br>Hypothetically, you will be able to click <a href=\"#\">here</a> to login.</h4>";
  
  
 	}

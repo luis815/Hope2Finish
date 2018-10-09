@@ -32,6 +32,9 @@ define(__NAMESPACE__ . "\LOG_DEBUG_FORMAT", true);
 //	Enable ECHO of log entry to screen. If disabled, log entries are only written to the log file.
 define(__NAMESPACE__ . "\ENABLE_LOG_ECHO", true);
 
+//	Custom BCRYPT cost value.
+define(__NAMESPACE__ . "\BCRYPT_COST_VALUE", 12);
+
 
 //	FUNCTIONS
 //	------------------------------------------------------------------------------------------------------------
@@ -139,6 +142,31 @@ function IS_EMAIL_VALID($email){
 	return false;
 }
 
+//	@BRIEF		Generate password hash for a given plain-text password. Uses
+//				native, built-in PHP function(s) for maximum security. For more
+//				information, see the following official PHP documentation.
+//				https://secure.php.net/manual/en/function.password-hash.php
+//	@RETURNS	Returns string containing password hash, or FALSE on failure.
+function GENERATE_PASSWORD_HASH($password){
+	
+	//	NOTE: Constant BCRYPT_COST_VALUE can be adjusted on a per-server basis
+	//	for optimal performance.
+	$options = [
+		'cost' => BCRYPT_COST_VALUE,
+	];
+	
+	return password_hash($password, PASSWORD_BCRYPT, $options);
+}
+
+//	@BRIEF		Verifies if the given password matches the given hash. Uses
+//				native, built-in PHP function(s) for maximum security. For more
+//				information, see the following official PHP documentation.
+//				https://secure.php.net/manual/en/function.password-hash.php
+//	@RETURNS	Returns TRUE if the password matches the hash or FALSE otherwise.
+function VERIFY_PASSWORD($password, $hash){
+	
+	return password_verify($password, $hash);
+}
 
 
 
