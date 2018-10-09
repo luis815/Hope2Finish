@@ -51,7 +51,7 @@ function GET_CALLER_FUNCTION(){
 	}
 }
 
-//	Custom log function.
+
 //	@BRIEF		Adds an entry to the log file. Log is created if it does not exist.
 //	@RETURNS	Returns number of bytes written, or FALSE on an error.
 //	------------------------------------------------------------------------------------
@@ -101,6 +101,43 @@ function LOG($type, $message){
 	return $result;
 }
 
+
+//	@BRIEF		Checks if $data contains $search.
+//	@RETURNS	Returns true if $search is in $data.
+function CONTAINS($data, $search){
+	if( strpos($data, $search) !== false ) return true;
+	return false;
+}
+
+//	@BRIEF		Removes all whitespace characters from $str.
+//	@RETURNS	Returns resulting string stripped of whitespace.
+function REMOVE_WHITESPACE($str){
+	
+	return preg_replace('/\s+/', '', $str);
+}
+
+//	@BRIEF		Truncates $data to number of characters given by $length. Returns original
+//				string if truncation length is longer than the length of the original string.
+//	@RETURNS	Returns truncated string.
+function TRUNCATE($data, $length){
+	
+	//	Compute length once since we will be using the value for multiple checks.
+	$len = strlen($data);
+	
+	if ($len == 0)
+		return "";
+	if ($len < $length)
+		return $data;
+	return substr($data , 0, $length);
+}
+
+//	@BRIEF		Checks if the given string is a valid email address format.
+//	@RETURNS	Returns true if it is valid or false if it is not.
+function IS_EMAIL_VALID($email){
+	
+	if (preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/", $email)) return true;
+	return false;
+}
 
 
 

@@ -7,6 +7,8 @@
 
 namespace REGISTRATION;
 
+require_once "db.php";
+
 //	CONSTANTS
 //	-------------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------------
@@ -128,34 +130,7 @@ $form_signup =
 //	-------------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------------
 
-//	@summary	Checks if $data contains $search.
-//	@return		Returns true if $search is in $data.
-function CONTAINS($data, $search){
-	if( strpos($data, $search) !== false ) return true;
-	return false;
-}
 
-//	@summary	Removes all whitespace characters from $str.
-//	@return		Returns resulting string stripped of whitespace.
-function REMOVE_WHITESPACE($str){
-	
-	return preg_replace('/\s+/', '', $str);
-}
-
-//	@summary	Truncates $data to number of characters given by $length. Returns original
-//				string if truncation length is longer than the length of the original string.
-//	@return		Returns truncated string.
-function TRUNCATE($data, $length){
-	
-	//	Compute length once since we will be using the value for multiple checks.
-	$len = strlen($data);
-	
-	if ($len == 0)
-		return "";
-	if ($len < $length)
-		return $data;
-	return substr($data , 0, $length);
-}
 
 //	@summary	Checks if a form was submitted with any data. Does not check validity of input.
 //	@return		Returns true if form was submitted with any data.
@@ -170,13 +145,7 @@ function WAS_FORM_SUBMITTED(){
 		return false;
 }
 
-//	@summary	Checks if the given string is a valid email address format.
-//	@return		Returns true if it is valid or false if it is not.
-function IS_EMAIL_VALID($email){
-	
-	if (preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/", $email)) return true;
-	return false;
-}
+
 
 //	@summary	Checks if submitted form data is valid.
 //	@return		Returns true if form was submitted with valid data.
@@ -202,8 +171,8 @@ function IS_FORM_DATA_VALID(&$error){
 	$t_p2 = $_REQUEST['password2'];
 	
 	//	Strip appropriate fields of any tags and whitespaces.
-	$t_e = strip_tags(REMOVE_WHITESPACE($t_e));
-	$t_u = strip_tags(REMOVE_WHITESPACE($t_u));
+	$t_e = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_e));
+	$t_u = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_u));
 	
 	//	Does the email address have the "@" character? Is the email address at least least 3-characters long?
 	if (!CONTAINS($t_e, "@") ||
@@ -214,7 +183,7 @@ function IS_FORM_DATA_VALID(&$error){
 	}
 	
 	//	Is the email in an valid format?
-	if (!IS_EMAIL_VALID($t_e)){
+	if (!\SYSTEM\IS_EMAIL_VALID($t_e)){
 		
 		$error = 1;
 		return false;
@@ -277,8 +246,8 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 	$t_p = $_REQUEST['password1'];
 	
 	//	Sanitize: remove any whitespace characters and tags.
-	$t_e = strip_tags(REMOVE_WHITESPACE($t_e));
-	$t_u = strip_tags(REMOVE_WHITESPACE($t_u));
+	$t_e = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_e));
+	$t_u = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_u));
 	
 	//	Truncate. NOTE: Under proper operation, the form should never accept fields that are longer than they
 	//	should be, however this is done for a better fail-safe solution.
@@ -333,6 +302,18 @@ if (WAS_FORM_SUBMITTED()){
 	else{
 	
 		//	Create user account.
+		
+		//	Get form data.
+		$email = $username = $password = $salt = "";
+		GET_FORM_DATA($email, $username, $password);
+		
+		$salt = "SAMPLE_SALT";
+		
+		//$result = CREATE
+		
+		
+		
+		
 		
 		$_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been (hypothetically)
  created.<br>Hypothetically, you will be able to click <a href=\"#\">here</a> to login.</h4>";
