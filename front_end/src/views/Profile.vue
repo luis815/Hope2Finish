@@ -6,6 +6,7 @@
         <ul>
         <li class="but"><button v-on:click="home" class="home">Home</button></li>
         <li class="search"><input type="text" placeholder="Search.." class="sear"></li>
+       
         
         <!-- <li class= "profpic"><img src="@/assets/Profpic.png" class="prof"></li> -->
         </ul>
@@ -14,10 +15,12 @@
     <div class="row">
   <div class="side">
       <h2>Username</h2>
+      
       <h5>Profile pic:</h5>
       <div class="profpic" style="height:200px;"><img src="@/assets/Profpic.png" class="prof"></div>
       <h3>About me</h3>
       <p>blah blah blah</p>
+      <button v-on:click="profileeditor" class="profed">edit</button>
   </div>
   <div class="main">
       <h5>Video uploads:</h5>
@@ -42,6 +45,11 @@ export default {
     home: function(event) {
       event.preventDefault();
       this.$router.push("/home");
+    },
+
+    profileeditor: function(event) {
+      event.preventDefault();
+      this.$router.push("/profileeditor");
     }
   }
 };
@@ -57,6 +65,19 @@ export default {
   cursor: pointer;
 }
 .home:hover {
+
+    color: black;
+}
+
+.profed {
+ background-color: none;
+  border: none;
+  color: blue;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+.profed:hover {
 
     background-color:cadetblue;
 }

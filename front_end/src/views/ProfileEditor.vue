@@ -34,6 +34,10 @@ export default {
     home: function(event) {
       event.preventDefault();
       this.$router.push("/home");
+    },
+    save: function(event) {
+      event.preventDefault();
+      this.$router.push("/profile");
     }
   }
 };
