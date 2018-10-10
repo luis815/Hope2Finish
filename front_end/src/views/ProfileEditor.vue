@@ -13,10 +13,10 @@
             <fieldset>
                 <legend><h3>Personal Info:</h3></legend>
                 <label class = "infield">Name:</label> <input type="text"><br>
-                 <label class = "infield">Email:</label> <input type="text"><br>
-                 <label class = "infield">Date of birth:</label> <input type="text"><br>
-                 <label class = "infield">About me: </label><br>
-                 <textarea rows="4" cols="50"></textarea><br>
+                <label class = "infield">Email:</label> <input type="text"><br>
+                <label class = "infield">Date of birth:</label> <input type="text"><br>
+                <label class = "infield">About me: </label><br>
+                <textarea rows="4" cols="50"></textarea><br>
             </fieldset>
         </form>
         <button v-on:click="save" class="Save">Save</button>

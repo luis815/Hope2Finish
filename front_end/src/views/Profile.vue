@@ -1,8 +1,7 @@
 <template>
 <div>
-    
+   <h1> Kyros</h1> 
  <div class="body">
-     <h1> Kyros</h1>
     <div class = "Topbar">
         <ul>
         <li class="but"><button v-on:click="home" class="home">Home</button></li>
@@ -88,6 +87,7 @@ export default {
 .Topbar ul {
   height: 100%;
   width: 100%;
+  
   list-style: none;
   border: solid;
   text-align: center;
@@ -97,16 +97,18 @@ export default {
 .Topbar {
   width: 100%;
   height: 50px;
-  list-style: none;
+  
 }
 
 .Topbar li {
   float: left;
-  display: block;
+  display:grid;
   text-decoration: none;
   font-weight: bold;
   height: 100%;
-  padding: 1px 3px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  padding-left: 3px;
  
 }
 
