@@ -28,6 +28,10 @@ define(__NAMESPACE__ . "\MAX_USERNAME_LENGTH", 32);
 define(__NAMESPACE__ . "\MIN_PASSWORD_LENGTH", 3);
 define(__NAMESPACE__ . "\MAX_PASSWORD_LENGTH", 255);
 
+//	API key that must be included with API Requests as the value for parameter "k" for authorization.
+define(__NAMESPACE__ . "\API_KEY", "12345");
+
+
 //	ERROR MESSAGE STRINGS (ENGLISH)
 //	-------------------------------------------------------------------------------------
 
@@ -98,6 +102,7 @@ $html_begin = '<html><head><title>Register | FALL_2018_CSE442_CHRISTOPHER_PEI</t
 $html_end = '</body></html>';
 $html_error_begin = '<div id="error">';
 $html_error_end = '</div>';
+
 
 
 $form_signup = 
@@ -276,6 +281,8 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 //	-------------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------------
 
+$user_registration_result = 0;
+
 //	Check if all fields have been submitted.
 if (WAS_FORM_SUBMITTED()){
 	
@@ -333,19 +340,23 @@ if (WAS_FORM_SUBMITTED()){
 		if ($error_count == 0){
 			
 			$salt = "-";	//	Temporary.
+			$user_registration_result = \DB\CREATE_USER($username, $password_hash, $salt, $email);
 			
-			switch(\DB\CREATE_USER($username, $password_hash, $salt, $email)){
+			switch($user_registration_result){
 				
 				case 0:	//	Success.
 					$_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been created.<br>Click <a href=\"#\">here</a> to login.</h4>";
+					$_SESSION['error_message_api'] = "User account created successfully.";
 					break;
 				case 2:	//	Account already exists.
 					$error_count++;
 					$_SESSION['error_message'] = "<h3 style=\"color:rgb(180,0,0);\">Sorry!</h3><h4 style=\"color:rgb(180,0,0);\"> An account with that username already exists.<br>Existing users can click <a href=\"#\">here</a> to login.</h4>";
+					$_SESSION['error_message_api'] = "User account already exists.";
 					break;
 				default:	//	General error.
 					$error_count++;
 					$_SESSION['error_message'] = "<h3 style=\"color:rgb(180,0,0);\">Sorry!</h3><h4 style=\"color:rgb(180,0,0);\"> Account creation failed.</h4>";
+					$_SESSION['error_message_api'] = "Unknown error.";
 					break;
 				
 			}
@@ -363,7 +374,113 @@ if (WAS_FORM_SUBMITTED()){
  
  
 	}
+	
+	//	API Requests
+	//	------------------------------------------------------------------- BEGIN API REQUEST PROCEDURES
+	
+	/*
+	#####################################################################################
+	
+	To issue an API request to REGISTER.PHP, send the following (additional) parameters:
+	
+		&api=1&k=XXXXX
+	
+	where XXXXX is the API Key defined by the API_KEY constant at the top of this file.
+	For example, if the API_KEY constant is "12345", you would send the following:
+	
+		&api=1&k=12345
 		
+	Full request example:
+	
+	https://cse442.dbmxpca.com/register.php?email=test@domain.com&username=testuser579&password1=123456&password2=123456&api=1&k=12345
+	
+	#####################################################################################
+	*/
+	
+	if (isset($_REQUEST['api'])){
+		
+		\SYSTEM\LOG("INFO", "Possible API request detected.");
+		
+		//	Set JSON page/content type and instantiate the JSON object.
+		header('Content-Type: application/json');
+		$j = new \stdClass();
+		
+		$j->success = false;
+		$j->error_code = -5;
+		$j->error_message = "No data provided.";
+		
+		\SYSTEM\LOG("INFO", "Checking data (Step 1 of 3)...");
+		
+		if (!strcmp($_REQUEST['api'], "1") || ($_REQUEST['api'] === 1)){
+			
+			\SYSTEM\LOG("INFO", "Checking data (Step 2 of 3)...");
+			
+			//	Verify API Key
+			if (isset($_REQUEST['k'])){
+				
+				\SYSTEM\LOG("INFO", "Checking data (Step 3 of 3)...");
+				
+				if (!strcmp($_REQUEST['k'], API_KEY)){
+					
+					\SYSTEM\LOG("INFO", "Data successfully verified.");
+					
+					if ($error_count == 0 && $user_registration_result == 0)
+						$j->success = true;
+					else
+						$j->success = false;
+					
+					//	Error Code
+					$j->error_code = $user_registration_result;
+					
+					//	Error Message
+					$j->error_message = $_SESSION['error_message_api'];
+					$j->error_message_frontend = $_SESSION['error_message'];
+				}
+				
+				//	Invalid API Key
+				else{
+					
+					\SYSTEM\LOG("ERROR", "Data verification failed. Provided API Key is invalid.");
+					
+					$j->success = false;
+					
+					//	Error Code
+					$j->error_code = -2;
+					
+					//	Error Message
+					$j->error_message = "Invalid API Key";
+					$j->error_message_frontend = null;
+				}
+			}
+			
+			//	Missing API Key
+			else{
+				
+				\SYSTEM\LOG("ERROR", "Data verification failed. Required API Key is missing.");
+				
+				$j->success = false;
+				
+				//	Error Code
+				$j->error_code = -1;
+				
+				//	Error Message
+				$j->error_message = "Missing API Key";
+			}
+		}
+		
+		echo json_encode($j);
+		
+		\SYSTEM\LOG("INFO", "End of API request.");
+		
+		if ($error_count == 0)
+			exit(0);
+			
+		exit(1);
+	}
+	
+	//	------------------------------------------------------------------- END API REQUESTS PROCEDURES
+	
+	//	Normal (Front-End) Request
 	echo $html_begin;
 	echo $form_signup;
 	

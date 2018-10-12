@@ -30,7 +30,8 @@ define(__NAMESPACE__ . "\LOG_INCLUDE_IP", false);
 define(__NAMESPACE__ . "\LOG_DEBUG_FORMAT", true);
 
 //	Enable ECHO of log entry to screen. If disabled, log entries are only written to the log file.
-define(__NAMESPACE__ . "\ENABLE_LOG_ECHO", true);
+// define(__NAMESPACE__ . "\ENABLE_LOG_ECHO", true);
+define(__NAMESPACE__ . "\ENABLE_LOG_ECHO", false);
 
 //	Custom BCRYPT cost value.
 define(__NAMESPACE__ . "\BCRYPT_COST_VALUE", 12);
