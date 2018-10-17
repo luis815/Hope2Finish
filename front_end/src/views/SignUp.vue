@@ -7,7 +7,7 @@
                         <div class="card text-left">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="card-title">LogIn</h5>
+                                    <h5 class="card-title">SignUp</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">Kyros</h6>
                                 </div>
                                 <form>
