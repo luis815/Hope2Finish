@@ -265,6 +265,8 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 	if (strlen($t_p) > MAX_PASSWORD_LENGTH)
 		$t_p = TRUNCATE($t_p, MAX_PASSWORD_LENGTH);
 	
+	//	Properly encode characters (such as spaces) in password.
+	$t_p = rawurlencode($t_p);
 	
 	//	"Return" the sanitized values.
 	$email = $t_e;
