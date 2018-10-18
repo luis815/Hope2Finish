@@ -254,15 +254,16 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 	//	Sanitize: remove any whitespace characters and tags.
 	$t_e = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_e));
 	$t_u = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_u));
+	$t_p = strip_tags($t_p);
 	
 	//	Truncate. NOTE: Under proper operation, the form should never accept fields that are longer than they
 	//	should be, however this is done for a better fail-safe solution.
 	if (strlen($t_e) > MAX_EMAIL_LENGTH)
-		$email = TRUNCATE($t_e, MAX_EMAIL_LENGTH);
+		$t_e = TRUNCATE($t_e, MAX_EMAIL_LENGTH);
 	if (strlen($t_u) > MAX_USERNAME_LENGTH)
-		$username = TRUNCATE($t_u, MAX_USERNAME_LENGTH);
+		$t_u = TRUNCATE($t_u, MAX_USERNAME_LENGTH);
 	if (strlen($t_p) > MAX_PASSWORD_LENGTH)
-		$password = TRUNCATE($t_p, MAX_PASSWORD_LENGTH);
+		$t_p = TRUNCATE($t_p, MAX_PASSWORD_LENGTH);
 	
 	
 	//	"Return" the sanitized values.
