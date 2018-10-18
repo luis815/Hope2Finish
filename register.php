@@ -327,6 +327,10 @@ if (WAS_FORM_SUBMITTED()){
 		$email = $username = $password = "";
 		GET_FORM_DATA($email, $username, $password) ? \SYSTEM\LOG("INFO", "... [OK]") : \SYSTEM\LOG("ERROR", "... [FAILED]");
 		
+		//	Decode the password.
+		\SYSTEM\LOG("INFO", "Decoding password...");
+		$password = rawurldecode($password);
+		
 		//	Hash the password.
 		\SYSTEM\LOG("INFO", "Generating password hash...");
 		$password_hash = \SYSTEM\GENERATE_PASSWORD_HASH($password);
