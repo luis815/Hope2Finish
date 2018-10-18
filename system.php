@@ -29,6 +29,10 @@ define(__NAMESPACE__ . "\LOG_INCLUDE_IP", false);
 //	This setting is primarily for debugging purposes and should be disabled in production use.
 define(__NAMESPACE__ . "\LOG_DEBUG_FORMAT", true);
 
+//	Enable logging of DEBUG entries. If enabled, log entries of type "DEBUG" or "DBG" will be
+//	logged. If disabled, log entries of type "DEBUG" or "DBG" will be skipped.
+define(__NAMESPACE__ . "\ENABLE_LOG_DEBUG", true);
+
 //	Enable ECHO of log entry to screen. If disabled, log entries are only written to the log file.
 // define(__NAMESPACE__ . "\ENABLE_LOG_ECHO", true);
 define(__NAMESPACE__ . "\ENABLE_LOG_ECHO", false);

@@ -41,65 +41,148 @@ define(__NAMESPACE__ . "\DB_NAME", "hope2finish-prj.db");
 //	FUNCTIONS
 //	------------------------------------------------------------------------------------------------------------
 
-/*
 
-//	Get calling function name. This is meant to be called from another function, and is not meant to be called
-//	directly.
-function GET_CALLER_FUNCTION(){
+
+//	@BRIEF		Authenticate a user account.
+//				NOTE: This function expects data ALREADY be sanitized.
+//	@RETURNS	Returns 1 on success; 0 if incorrect password, 2 if user does not exist.
+//	------------------------------------------------------------------------------------
+//	@username	The username of the user account.
+//	@password	The plain-text password of the user account.
+function AUTHENTICATE_USER($username, $password){
 	
-	$max_level = 5;
-	$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-	for ($i = $max_level; $i > 0; $i--){
+	//	Friendly operation name for logging.
+	$operation_name = "User Account Authentication";
+	
+	//	Keep track of success, error and warning count.
+	$success_count = 0;
+	$error_count = 0;
+	$warning_count = 0;
+	
+	//	Set custom return value.
+	$return = 0;
+	
+	//	NOTE: "execute()" used for PREAPARED statements; otherwise only use "exec()".
+	
+	\SYSTEM\LOG("INFO", "Starting " . $operation_name . "...");
+	
+	//	Sanity checks.
+	if (
+		(!isset($username) || empty($username)) ||
+		(!isset($password) || empty($password))
+		){
 		
-		if (isset($trace[$i])) return $trace[$i]['function'];
+		\SYSTEM\LOG("ERROR", "One or more null or empty values provided. Operation terminated.");
+		return 1;
 	}
+	
+	try{
+		
+		$tableName = "users";
+		
+		\SYSTEM\LOG("INFO", "----------------------------------------------------------------------");
+		\SYSTEM\LOG("INFO", "This operation will attempt to authenticate the following user account:");
+		\SYSTEM\LOG("INFO", " -- Username[\"" . $username . "\"]");
+		\SYSTEM\LOG("INFO", "----------------------------------------------------------------------");
+		
+		//	Open or create database if it doesn't exist.
+		\SYSTEM\LOG("INFO", "Opening/creating database \"" .  DB_NAME  .  "\"...");
+		$db = new \PDO('sqlite:' . DB_NAME);
+		
+		//	Perform a SELECT query to see if a user account with the same username already exists.
+		$select = "SELECT id, username, email, password from " . $tableName . " WHERE username=:username";
+		$statement = $db->prepare($select);
+		
+		//	Bind appropriate parameters to statement vars.
+		$statement->bindValue(':username', $username, \PDO::PARAM_STR);
+		
+		//	Execute
+		$statement->execute();
+		
+		//	Fetch the data.
+		$r = $statement->fetchAll();
+		
+		//	DEBUG PRINT
+		//\SYSTEM\LOG("DEBUG", print_r($r));
+		
+		//	DEBUG
+		//exit(0);
+		
+		//	We can login in via username OR email in the future BUT to do this safely, we must guarantee
+		//	that all emails are unique, which we do not do at this time. Thus, we will only allow login
+		//	via username for now.
+		if (isset($r[0]["id"]) &&
+			isset($r[0]["username"]) &&
+			isset($r[0]["email"]) &&
+			isset($r[0]["password"])
+			){
+			
+			//$error_count++;
+			//$return = 2;
+			\SYSTEM\LOG("INFO", "User account found (id: " . $r[0]["id"] . "; email: " . $r[0]["email"] . "). Checking password...");
+			
+			//	Fetch the password information as stored in the DB.
+			$hash = $r[0]["password"];
+			
+			//	Do an EXPLICIT check to make sure TRUE.
+			if (\SYSTEM\VERIFY_PASSWORD($password, $hash) === TRUE){
+			
+				$success_count++;
+				$return = 1;
+				\SYSTEM\LOG("INFO", "Password verification successful - password is correct.");
+				\SYSTEM\LOG("INFO", "Authentication successful.");
+			}
+			
+			else{
+				//	Incorrect password.
+				$error_count++;
+				$return = 0;
+				\SYSTEM\LOG("ERROR", "Password verification failed - incorrect password provided.");
+				\SYSTEM\LOG("ERROR", "Authentication failed.");
+			}
+			
+		}
+		
+		//	User account does not exist.
+		else{
+			
+			$error_count++;
+			$return = 2;
+			\SYSTEM\LOG("ERROR", "User account \"" . $username . "\" does not exist.");
+		}
+		
+		//	TODO: Proceed to create cookie/session/whatever to save user's login state for login persistence.
+		if ($error_count === 0 && $warning_count === 0){
+			
+			//	TODO
+		}
+		
+		//	Close DB.
+		\SYSTEM\LOG("INFO", "Closing database connection...");
+		$db = null;
+		
+		if (isset($db)){
+			$error_count++;
+			\SYSTEM\LOG("ERROR", "Failed to close database connection.");
+		}
+		else \SYSTEM\LOG("INFO", "Successfully closed database connection.");
+		
+		\SYSTEM\LOG("INFO", "Finished " . $operation_name . ".");		
+		
+	}catch(PDOException $e){
+		
+		$return = 1;
+		\SYSTEM\LOG("EXCEPTION", $e->getMessage());
+		$error_count++;
+		\SYSTEM\LOG("INFO", "============ " . $operation_name . ": " . $success_count . " succeeded, " . $error_count . " failed, " . $warning_count . " warning(s) ============");
+		return $return;
+	}
+	
+	\SYSTEM\LOG("INFO", "============ " . $operation_name . ": " . $success_count . " succeeded, " . $error_count . " failed, " . $warning_count . " warning(s) ============");
+	return $return;
+	
 }
 
-//	Custom log function.
-function LOG($type, $message){
-	
-	if (!LOG_ENABLE) return;
-	
-	$timestamp = date("m/d/Y") . ' @ ' . date("h:i:s A T");
-	$filename = DIRECTORY_PATH . '\\' . LOG_NAME;
-	
-	//	Begin forming the log entry with the timestamp.
-	$line = "[" . $timestamp . "]";
-	
-	//	If visitor-ip logging is enabled, include the it if it is available.
-	if (LOG_INCLUDE_IP){
-		
-		if (isset($_SERVER['REMOTE_ADDR']))
-			$line .= " [" . $_SERVER['REMOTE_ADDR'] . "]";
-		else
-			$line .= " [?]";
-	}
-	
-	//	Log entry type.
-	$line .= " [" . $type . "]";
-	
-	//	If debug-style logging is enabled, include the name of calling function.
-	if (LOG_DEBUG_FORMAT){
-		$line .= " [@" . GET_CALLER_FUNCTION() . "]";
-	}
-	
-	//	Log message.
-	$line .= ": " . $message;
-	
-	//	If log-echo feature is enabled, echo entry to the screen.
-	if (ENABLE_LOG_ECHO)
-		echo "<pre>" .  $line . "</pre>";
-	
-	//	Write/append entry to log file.
-	//$linef = "\n" . $line;
-	$fp = fopen($filename, 'a');
-	$result = fwrite($fp, "\n" . $line);
-	fclose($fp);
-	
-	return $result;
-}
-
-*/
 
 
 //	@BRIEF		Create a user account by inserting the new user into the database.
