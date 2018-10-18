@@ -48,7 +48,8 @@ define(__NAMESPACE__ . "\DB_NAME", "hope2finish-prj.db");
 //	@RETURNS	Returns 1 on success; 0 if incorrect password, 2 if user does not exist.
 //	------------------------------------------------------------------------------------
 //	@username	The username of the user account.
-//	@password	The plain-text password of the user account.
+//	@password	The plain-text password of the user account. NOTE: This MUST be encoded
+//				with rawurlencode().
 function AUTHENTICATE_USER($username, $password){
 	
 	//	Friendly operation name for logging.
@@ -124,6 +125,9 @@ function AUTHENTICATE_USER($username, $password){
 			//	Fetch the password information as stored in the DB.
 			$hash = $r[0]["password"];
 			
+			//	Decode supplied password.
+			$password = rawurldecode($password);
+			
 			//	Do an EXPLICIT check to make sure TRUE.
 			if (\SYSTEM\VERIFY_PASSWORD($password, $hash) === TRUE){
 			
@@ -171,7 +175,7 @@ function AUTHENTICATE_USER($username, $password){
 		
 	}catch(PDOException $e){
 		
-		$return = 1;
+		$return = -1;
 		\SYSTEM\LOG("EXCEPTION", $e->getMessage());
 		$error_count++;
 		\SYSTEM\LOG("INFO", "============ " . $operation_name . ": " . $success_count . " succeeded, " . $error_count . " failed, " . $warning_count . " warning(s) ============");
