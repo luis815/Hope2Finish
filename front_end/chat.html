@@ -1,0 +1,198 @@
+<!--Team: Hope2Finish
+Text Editor: Notepad++
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Kyros Chat</title>
+
+<style>
+.body {
+        text-align: center;
+    }
+    .leftcolDiv {
+        float: left;
+        margin: 0 -15% 10% 10%;
+        padding: 1%;
+        width: 15%;
+		//background-color: gray;
+    }
+    .midcolDiv {
+        float: right;
+        margin: 0% 10% 1% 1%;
+        padding: 1%;
+        width: 39%;
+		//background-color: gray;
+    }
+	.rightcolDiv {
+        float: right;
+        margin: 0% 5% 1% 1%;
+        width: 7%;
+		font-size: 25px;
+		border: 1px solid blue; /* Dark Blue border */
+		background-color: #ACD8F0; //blue
+    }
+    p {
+        font-size: 20px;
+    }
+    .topnav input[type=text] {
+        padding: 6px;
+        border: solid;
+        margin-bottom: 16px;
+        font-size: 17px;
+        width: 35%;
+    }
+    .rightnav{
+        float: right;
+        margin-top: -6%;
+        margin-right: 1%;
+        font-size: 120%;
+    }
+    .innerdiv {
+        border: 5px outset;
+        box-shadow : 2px 10px 10px #888888;
+        margin: 1% -10% 1% 15%;
+        padding: 7%;
+        width: 50%
+    }
+	form, p, span {
+    margin:0;
+    padding:0; }
+  
+input { font:12px arial; }
+  
+a {
+    color:#0000FF;
+    text-decoration:none; }
+  
+    a:hover { text-decoration:underline; }
+  
+#wrapper, #loginform {
+    margin:0 auto;
+    padding-bottom:25px;
+    background:#EBF4FB;
+    width:504px;
+    border:1px solid #ACD8F0; }
+  
+#loginform { padding-top:18px; }
+  
+    #loginform p { margin: 5px; }
+  
+#chatbox {
+    text-align:left;
+    margin:0 auto;
+    margin-bottom:25px;
+    padding:10px;
+    background:#fff;
+    height:270px;
+    width:430px;
+    border:1px solid #ACD8F0;
+    overflow:auto; }
+  
+#usermsg {
+    width:395px;
+    border:1px solid #ACD8F0; }
+  
+#submit { width: 60px; }
+  
+.error { color: #ff0000; }
+  
+#menu { padding:12.5px 25px 12.5px 25px; }
+  
+.welcome { float:left; }
+  
+.msgln { margin:0 0 2px 0; }
+
+.btn-group button {
+    background-color: #ACD8F0; /* Blue background */
+    border: 1px solid blue; /* Dark Blue border */
+    color: black;
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+	width: 100%;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #eafeff;
+}
+</style>
+<div class = "body">
+    <h1>
+        Kyros
+    </h1>
+	<div class="rightcolDiv">
+		<a href="index.html">Home</a>
+	</div>
+	<div class="midcolDiv">
+   <div id="wrapper">
+		<div id="menu">
+			<p class="welcome">Welcome <b></b></p>
+			<div style="clear:both"></div>
+		</div>
+		 
+		<div id="chatbox"></div>
+		 
+		<form name="message" action="">
+			<input name="usermsg" type="text" id="usermsg" size="63" />
+			<input name="submitmsg" type="submit"  id="submitmsg" value="Send" />
+		</form>
+	</div></div>
+	
+	<div class="leftcolDiv">
+	<p>Connected Creators</p><br>
+	<div class="btn-group">
+		<button>Luis</button><br><br><br>
+		<button>Vik</button><br><br><br>
+		<button>Wade</button><br><br><br>
+		<button>Chris</button><br><br><br>
+		<button>Justin</button>
+	</div></div>
+
+	<!--<div id="chatbox"><?php
+	if(file_exists("log.html") && filesize("log.html") > 0){
+		$handle = fopen("log.html", "r");
+		$contents = fread($handle, filesize("log.html"));
+		fclose($handle);
+		 
+		echo $contents;
+	}
+	?></div>-->
+</div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript">
+// jQuery Document
+//If user submits the form
+	$("#submitmsg").click(function(){	
+		var clientmsg = $("#usermsg").val();
+		$.post("post.php", {text: clientmsg});				
+		$("#usermsg").attr("value", "");
+		return false;
+	});
+	//Load the file containing the chat log
+	function loadLog(){		
+
+		$.ajax({
+			url: "log.html",
+			cache: false,
+			success: function(html){		
+				$("#chatbox").html(html); //Insert chat log into the #chatbox div				
+		  	},
+		});
+	}
+$(document).ready(function(){
+setInterval (loadLog, 2500); 
+});
+</script>
+
+</html>
+
