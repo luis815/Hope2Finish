@@ -9,18 +9,17 @@
     </div>
 
     <div>
-        <form>
+        <form method="POST" action= "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
             <fieldset>
                 <legend><h3>Personal Info:</h3></legend>
                 <label class = "infield">Name:</label> <input type="text"><br>
                 <label class = "infield">Email:</label> <input type="text"><br>
                 <label class = "infield">Date of birth:</label> <input type="text"><br>
                 <label class = "infield">About me: </label><br>
-                <textarea rows="4" cols="50"></textarea><br>
+                <textarea rows="4" cols="50"></textarea><input type="text"><br>
+                <button type = "submit" class="Save">Save</button><br>
             </fieldset>
         </form>
-        <button v-on:click="save" class="Save">Save</button>
-
     </div>
   </div>
 </div>
@@ -34,12 +33,12 @@ export default {
     home: function(event) {
       event.preventDefault();
       this.$router.push("/home");
-    },
-    save: function(event) {
-      event.preventDefault();
-      this.$router.push("/profile");
     }
-  }
+    // save: function(event) {
+    //   event.preventDefault();
+    //   this.$router.push("/profile");
+    // }
+  }     
 };
 </script>
 
