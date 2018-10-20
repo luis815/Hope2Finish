@@ -1,6 +1,7 @@
-<?php
 
-namespace ProfData;
+<html>
+
+<?php
 
 
 function getInfo($username)
@@ -100,5 +101,36 @@ try{
 }
 //Test
 //addInfo("test.db", "users", "Justin", "jwcappie@wfwfewefwvdfe", "10/23/96", "hi");
-//var_dump(getInfo("Justin"));
+var_dump(getInfo("Justin"));
 ?>
+
+
+<template>
+
+<div>
+    
+ <div class="body">
+     <h1> Kyros</h1>
+    <div class = "Topbar">
+        
+        <label class="homel"><button v-on:click="home" class="home">Home</button></label>
+    </div>
+
+    <div>
+        <form method="POST" action= "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+            <fieldset>
+                <legend><h3>Personal Info:</h3></legend>
+                <label class = "infield">Name:</label> <input type="text"><br>
+                <label class = "infield">Email:</label> <input type="text"><br>
+                <label class = "infield">Date of birth:</label> <input type="text"><br>
+                <label class = "infield">About me: </label><br>
+                <textarea rows="4" cols="50"></textarea><input type="text"><br>
+                <button type = "submit" class="Save">Save</button><br>
+            </fieldset>
+        </form>
+    </div>
+  </div>
+</div>
+    
+</template>
+</html>
