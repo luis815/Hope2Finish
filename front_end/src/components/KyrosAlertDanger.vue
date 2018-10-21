@@ -1,6 +1,6 @@
 <template>
     <div id="kyros-alert-danger" class="container fixed-bottom">
-        <div class="alert alert-danger" role="alert"> {{msg}}</div>
+        <div class="alert alert-danger" role="alert" v-html="msg"></div>
     </div>
 </template>
 
