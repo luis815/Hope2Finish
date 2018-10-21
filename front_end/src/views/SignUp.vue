@@ -69,7 +69,6 @@
                 let inputUser = this.inputUser;
                 inputUser.api = 1;
                 inputUser.k = 12345;
-                console.log(inputUser);
 
                 //Request options
                 const options = {
@@ -84,10 +83,9 @@
                 request(options, function (err, res, body) {
                     if (!err && res.statusCode === 200) {
                         if (body.success === false) {
-                            thisReference.alert(body.error_message);
+                            thisReference.alert(body.error_message_frontend);
                         } else {
                             thisReference.setUser({username: thisReference.input.username});
-                            //console.log('Welcome: ' + thisReference.user.username);
                             thisReference.$router.push('/home');
                         }
                     } else {
