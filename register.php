@@ -284,7 +284,7 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 //	-------------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------------
 
-$user_registration_result = 0;
+$user_registration_result = -1;
 
 //	Check if all fields have been submitted.
 if (WAS_FORM_SUBMITTED()){
