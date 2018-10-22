@@ -72,8 +72,11 @@ echo '
 </div>   
     <div class="body">
   
-    <div class = "Topbar">  
-            <button type = "back" action="SearchUser.php" class="home" name= "back">Back</button>
+    <div class = "Topbar"> 
+    <form method="POST"   action="SearchUser.php" >
+    <button type = "back"class="home" name= "back">Back</button>
+   <button type = "submit" name = "submit" class="Save">Search</button><br> 
+            
         </div>
         
         <br>

@@ -38,18 +38,57 @@ try{
     if($email == "")
     {
         echo '<html>
-
-        <div>
-           <h1> Kyros</h1> 
+        <div class = header>
+        <h1> <strong> Kyros </strong></h1>
+       </div>  
          <div class="body">
-        This User Does Not Exist
-         
+       
+        <div class = "Topbar">
          <form method="POST"  action="SearchUser.php">
          <button type = "home"  class="home">Back</button><br>
          </form>
+        </div>
+
+         This User Does Not Exist
          </div>
 
         </div>
+
+        <style scoped>
+
+.Topbar {
+  width: 100%;
+  height: 6%;
+  border: solid;
+  text-align: center;
+  overflow: hidden;
+  background-color:aquamarine;
+}
+
+
+.header{
+  height: 8%;
+  text-align: center;
+ 
+}
+
+.home {
+  background-color: rgba(0, 119, 255, 0.712);
+  border: solid;
+  color: black;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 10 7;
+  float: left;
+  display: inline-block;
+
+}
+.home:hover {
+
+  background-color: cadetblue;
+}
+</style>
          </html>';
 
     }
