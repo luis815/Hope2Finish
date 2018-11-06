@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-sm d-flex align-items-center">
                         <div id="welcome-msg-wrapper">
-                            <h1 class="display-3">Upload your content.</h1>
+                            <h1 class="display-3">Upload your content!</h1>
                             <h3>Connect with your community.</h3>
                         </div>
                     </div>
@@ -43,8 +43,9 @@
 
 <style scoped>
     #LandingPage {
-        height: 100%;
-        overflow: scroll;
+        min-height: 100%;
+        height: 1px;
+        overflow: auto;
     }
 
     #welcome {

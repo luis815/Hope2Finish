@@ -1,12 +1,7 @@
 <template>
-    <div id="app">
-        <router-view/>
-    </div>
+    <router-view/>
 </template>
 
 <style>
-    #app {
-        height: 100%;
-        overflow: scroll;
-    }
+
 </style>
