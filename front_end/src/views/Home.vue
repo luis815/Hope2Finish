@@ -1,79 +1,103 @@
 <template>
-    <div class = "body">
-    <h1>
-        Kyros
-    </h1>
-    <div class="topnav">
-        <input type="text" placeholder="Search..">
-    </div>
-        <div class = "rightnav">
-            Welcome <router-link to="/profile">KyrosUser!</router-link>
+    <div id="home" class="text-center text-light bg-dark">
+        <h1>Kyros</h1>
+        <div>
+            <input type="text" placeholder="Search..">
         </div>
-    <div class="leftcolDiv">
-        <div class="YTvid">
-            <iframe width="560" height="349" src="https://www.youtube.com/embed/I7LJIuB2CHE"
-                    allowfullscreen></iframe></div>
-        <p>Comments</p>
-        <p><textarea rows="4" cols="50" name="comment" placeholder="Enter Comment">
-        </textarea></p>
-    </div>
-
-    <div class="rightcolDiv">
-        Recent Uploads
-        <div class="innerdiv">
-            <iframe src="https://www.youtube.com/embed/ctx4YBEdOxo" allowfullscreen></iframe>
-            <iframe src="https://www.youtube.com/embed/vMPR7k9DWlw" allowfullscreen></iframe>
-            <iframe src="https://www.youtube.com/embed/u5V_VzRrSBI" allowfullscreen></iframe>
+        <div>
+            Welcome KyrosUser!
         </div>
-    </div>
-
-
+        <h3>
+            Subscriptions
+        </h3>
+        <div class="container">
+            <div class="row">
+                <div v-for="url in urls" class="col-md">
+                    <img v-on:click="onThumbnailClick(url)" class="img-fluid thumbnail"
+                         :src="'http://img.youtube.com/vi/' + url + '/maxresdefault.jpg'"/>
+                </div>
+            </div>
+        </div>
+        <div id="overlay">
+            <div id="modal" class="bg-light">
+                <i v-on:click="closeOverlay" id="close" class="far fa-window-close fa-2x"></i>
+                <iframe class="youtube" :src="modalSrc" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Home"
+        name: "Home",
+        data() {
+            return {
+                urls: ['I7LJIuB2CHE', 'ctx4YBEdOxo', 'vMPR7k9DWlw', 'u5V_VzRrSBI'],
+                modalSrc: ''
+            }
+        },
+        methods: {
+            onThumbnailClick(/*String*/url) {
+                this.modalSrc = 'https://www.youtube.com/embed/' + url;
+                $('#overlay').fadeIn(250);
+            },
+            closeOverlay() {
+                $('#overlay').fadeOut(250);
+            }
+        },
+        mounted() {
+            $('#overlay').hide();
+        }
     }
 </script>
 
 <style scoped>
-    .body {
-        text-align: center;
+    #home {
+        min-height: 100%;
+        height: 1px;
+        overflow: auto;
     }
-    .leftcolDiv {
-        float: left;
-        margin: 0 1% 1% 10%;
-        padding: 1%;
-        width: 39%;
+
+    .thumbnail {
+        padding-top: 1em;
+        padding-bottom: 1em;
     }
-    .rightcolDiv {
+
+    #overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+    }
+
+    #modal {
+        width: 90%;
+        margin: 100px auto;
+        max-width: 800px;
+        min-height: 100px;
+        position: relative;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .youtube {
+        width: 100%;
+        height: 400px;
+    }
+
+    #close {
+        color: #333;
+        padding-bottom: 10px;
         float: right;
-        margin: 0% -5% 1% 1%;
-        padding: 1%;
-        width: 39%;
     }
-    p {
-        font-size: 20px;
-    }
-    .topnav input[type=text] {
-        padding: 6px;
-        border: solid;
-        margin-bottom: 16px;
-        font-size: 17px;
-        width: 35%;
-    }
-    .rightnav{
-        float: right;
-        margin-top: -6%;
-        margin-right: 1%;
-        font-size: 120%;
-    }
-    .innerdiv {
-        border: 5px outset;
-        box-shadow : 2px 10px 10px #888888;
-        margin: 1% -10% 1% 15%;
-        padding: 7%;
-        width: 50%
+
+    #close:hover {
+        cursor: pointer;
+        color: #555;
     }
 </style>

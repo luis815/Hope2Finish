@@ -44,8 +44,9 @@
 
 <style scoped>
     #watch {
-        height: 100%;
-        overflow: scroll;
+        min-height: 100%;
+        height: 1px;
+        overflow: auto;
     }
 
     #player-container {

@@ -8,6 +8,7 @@ import SignUp from './views/SignUp.vue'
 import Home from './views/Home.vue'
 import Upload from './views/Upload.vue'
 import Watch from './views/Watch.vue'
+import Kyros404 from './views/Kyros404'
 
 Vue.use(Router);
 
@@ -62,6 +63,11 @@ export default new Router({
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () => import(/* webpackChunkName: "about" */ './views/SampleAbout.vue')
+        },
+        {
+            path: '/*',
+            name: 'kyros-404',
+            component: Kyros404
         }
     ]
 })

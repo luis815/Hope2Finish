@@ -7,7 +7,7 @@
                         <div class="card text-left">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="card-title">LogIn</h5>
+                                    <h5 class="card-title">SignUp</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">Kyros</h6>
                                 </div>
                                 <form>
@@ -69,7 +69,6 @@
                 let inputUser = this.inputUser;
                 inputUser.api = 1;
                 inputUser.k = 12345;
-                console.log(inputUser);
 
                 //Request options
                 const options = {
@@ -84,10 +83,9 @@
                 request(options, function (err, res, body) {
                     if (!err && res.statusCode === 200) {
                         if (body.success === false) {
-                            thisReference.alert(body.error_message);
+                            thisReference.alert(body.error_message_frontend);
                         } else {
                             thisReference.setUser({username: thisReference.input.username});
-                            //console.log('Welcome: ' + thisReference.user.username);
                             thisReference.$router.push('/home');
                         }
                     } else {
@@ -122,8 +120,9 @@
 
 <style scoped>
     #signup {
-        height: 100%;
-        overflow: scroll;
+        min-height: 100%;
+        height: 1px;
+        overflow: auto;
     }
 
     #signup-form {
