@@ -254,16 +254,19 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 	//	Sanitize: remove any whitespace characters and tags.
 	$t_e = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_e));
 	$t_u = strip_tags(\SYSTEM\REMOVE_WHITESPACE($t_u));
+	$t_p = strip_tags($t_p);
 	
 	//	Truncate. NOTE: Under proper operation, the form should never accept fields that are longer than they
 	//	should be, however this is done for a better fail-safe solution.
 	if (strlen($t_e) > MAX_EMAIL_LENGTH)
-		$email = TRUNCATE($t_e, MAX_EMAIL_LENGTH);
+		$t_e = TRUNCATE($t_e, MAX_EMAIL_LENGTH);
 	if (strlen($t_u) > MAX_USERNAME_LENGTH)
-		$username = TRUNCATE($t_u, MAX_USERNAME_LENGTH);
+		$t_u = TRUNCATE($t_u, MAX_USERNAME_LENGTH);
 	if (strlen($t_p) > MAX_PASSWORD_LENGTH)
-		$password = TRUNCATE($t_p, MAX_PASSWORD_LENGTH);
+		$t_p = TRUNCATE($t_p, MAX_PASSWORD_LENGTH);
 	
+	//	Properly encode characters (such as spaces) in password.
+	$t_p = rawurlencode($t_p);
 	
 	//	"Return" the sanitized values.
 	$email = $t_e;
@@ -281,7 +284,7 @@ function GET_FORM_DATA(&$email, &$username, &$password){
 //	-------------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------------
 
-$user_registration_result = 0;
+$user_registration_result = -1;
 
 //	Check if all fields have been submitted.
 if (WAS_FORM_SUBMITTED()){
@@ -323,6 +326,10 @@ if (WAS_FORM_SUBMITTED()){
 		\SYSTEM\LOG("INFO", "Fetching registration form data...");
 		$email = $username = $password = "";
 		GET_FORM_DATA($email, $username, $password) ? \SYSTEM\LOG("INFO", "... [OK]") : \SYSTEM\LOG("ERROR", "... [FAILED]");
+		
+		//	Decode the password.
+		\SYSTEM\LOG("INFO", "Decoding password...");
+		$password = rawurldecode($password);
 		
 		//	Hash the password.
 		\SYSTEM\LOG("INFO", "Generating password hash...");
