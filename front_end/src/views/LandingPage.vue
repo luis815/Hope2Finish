@@ -1,27 +1,38 @@
 <template>
-<body style="background-color:grey;">
-<font color="50c878">
-    <div id="LandingPage">
-        <center><h1>Kyros</h1></center>
-        <center><p>Kyros a unique content creator oriented platform</p></center>
-        <div id="nav">
-            <center><router-link to="/login">login</router-link></center>
-            <center><router-link to="/signup">register</router-link></center>
-        </div>
-        <form>
-        <center>
-  		User name:<br>
-  		<input type="text" name="Username"><br>
-  		Password:<br>
-  		<input type="text" name="password">
-  		<p>
-  		<A HREF="https://www.youtube.com/" style="color: #50c878">New User?</A>
-  		</p>
-		</center>
-		</form>
+    <div id="LandingPage" class="bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <router-link class="navbar-brand" to="/">Kyros</router-link>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/signup">SignUp</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/login">LogIn</router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <section id="welcome" class="text-center text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm d-flex align-items-center">
+                        <div id="welcome-msg-wrapper">
+                            <h1 class="display-3">Upload your content!</h1>
+                            <h3>Connect with your community.</h3>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <img src="../assets/welcome.jpg" class="img-thumbnail" alt="Responsive image">
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-</font>
-</body>
 </template>
 
 <script>
@@ -32,11 +43,21 @@
 
 <style scoped>
     #LandingPage {
-
-
+        min-height: 100%;
+        height: 1px;
+        overflow: auto;
     }
 
-    #nav {
-        background: whitesmoke;
+    #welcome {
+        padding-top: 5em;
+        padding-bottom: 5em;
+    }
+
+    #welcome img {
+        height: 30em;
+    }
+
+    #welcome-msg-wrapper {
+        padding-bottom: 5em;
     }
 </style>

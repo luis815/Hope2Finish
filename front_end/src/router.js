@@ -6,6 +6,9 @@ import Profile from './views/Profile.vue'
 import LogIn from './views/LogIn.vue'
 import SignUp from './views/SignUp.vue'
 import Home from './views/Home.vue'
+import Upload from './views/Upload.vue'
+import Watch from './views/Watch.vue'
+import Kyros404 from './views/Kyros404'
 
 Vue.use(Router);
 
@@ -39,6 +42,16 @@ export default new Router({
             component: Profile
         },
         {
+            path: '/upload',
+            name: 'upload',
+            component: Upload
+        },
+        {
+            path: '/watch',
+            name: 'watch',
+            component: Watch
+        },
+        {
             path: '/sample-home',
             name: 'sample-home',
             component: SampleHome
@@ -50,6 +63,11 @@ export default new Router({
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () => import(/* webpackChunkName: "about" */ './views/SampleAbout.vue')
+        },
+        {
+            path: '/*',
+            name: 'kyros-404',
+            component: Kyros404
         }
     ]
 })
