@@ -85,7 +85,14 @@ try{
                 <div class="profpic" style="height:200px;"><img src="Profpic.png" class="prof"></div>
                 <h3>About me</h3>
                 <p> ' .  $About  . ' </p>
-                <button class="profed">edit</button>
+                <form method="POST"  action="CreateProf.php">
+                <input hidden type="text" name = "username" value = "'. $username . '">
+                <input hidden type="text" name = "name" value = "'. $displayName . '">
+                <input hidden name = "email" id = "email" type="text" value = "'. $email . '">
+                <input hidden type="text" name = "dob" value = "'. $dob . '">
+                <input hidden type="text" name = "about" value = "'. $About . '">
+                <button class="profed" type = "update" name = "update">edit</button>
+                </form>
             </div>
 
             <div class="main">
