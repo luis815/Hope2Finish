@@ -309,6 +309,65 @@ function IS_FORM_DATA_VALID(&$error){
 }
 
 
+//	@summary	Returns sanitized version of submitted video upload form data. Here, "sanitized" refers
+//				to the data being truncated to maximum lengths in case it is larger to avoid buffer
+//				overflows, and formatted properly to be accepted for processing. The sanitized values
+//				are supplied (by the function) in the variables passed by reference.
+//	@return		Returns true on successful sanitizing of all components. Returns false if one more fields
+//				are missing (null), empty, or if the password doe not match the confirmation password.
+function GET_FORM_DATA(&$title, &$description){
+	
+	//	Ensure all fields are set.
+	if (!isset($_FILES['v']) ||
+		!isset($_REQUEST['agree'])
+		) return false;
+		
+	//	Ensure they are not empty.
+	if (empty($_FILES['v']) ||
+		empty($_REQUEST['agree'])
+		) return false;
+		
+	
+	$t_t = '';					//	Title
+	$t_d = '';					//	Description
+	$t_v = $_FILES['v'];		//	Video file
+	$t_a = $_REQUEST['agree'];	//	Agree
+	
+	//	Check if title is supplied and if so, strip and truncate.
+	if (isset($_REQUEST['t']) && !empty($_REQUEST['t'])){
+		
+		//	Make a copy of the value.
+		$t_t = $_REQUEST['t'];
+		//	Fuck off tags.
+		$t_t = strip_tags($t_t);
+		//	Truncate if required.
+		if (strlen($t_t) > MAX_VIDEO_TITLE_LENGTH)
+			$t_t = \SYSTEM\TRUNCATE($t_t, MAX_VIDEO_TITLE_LENGTH);
+	}
+	else{ $t_t = "Untitled"; }	//	Default title.
+	
+	//	Check if description is supplied and if so, strip and truncate.
+	if (isset($_REQUEST['d']) && !empty($_REQUEST['d'])){
+		
+		//	Make a copy of the value.
+		$t_d = $_REQUEST['d'];
+		//	Fuck off tags.
+		$t_d = strip_tags($t_t);
+		//	Truncate if required.
+		if (strlen($t_d) > MAX_VIDEO_DESCRIPTION_LENGTH)
+			$t_d = \SYSTEM\TRUNCATE($t_d, MAX_VIDEO_DESCRIPTION_LENGTH);
+	}
+	else{ $t_d = ""; }	//	Default description.
+	
+	//	Return the memes.
+	$title = $t_t;
+	$description = $t_d;
+	
+	return true;
+
+}
+
+
 
 
 
