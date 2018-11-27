@@ -368,6 +368,31 @@ function GET_FORM_DATA(&$title, &$description){
 }
 
 
+//	@summary	Generates a random string to be used as the video identifier and file name.
+//	@return		Returns video ID string.
+function GENERATE_UNIQUE_VIDEO_ID(){
+	
+	//	Pick some "unique" string.
+	return \SYSTEM\RANDOM_STR(VIDEO_ID_LENGTH);
+	
+}
+
+
+
+//	SCRIPT BEGINS
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+
+$video_upload_result = -1;
+
+//				0 = missing/blank fields; 1 = invalid video file; 2 = video too large;
+//				3 = did not agree to terms and conditions;
+
+
+
+
 
 
 
