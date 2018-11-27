@@ -391,6 +391,267 @@ $video_upload_result = -1;
 //				3 = did not agree to terms and conditions;
 
 
+//	Check if all fields have been submitted.
+if (WAS_FORM_SUBMITTED()){
+	
+	$error = 0;
+	if (!IS_FORM_DATA_VALID($error)){
+		
+		switch($error){
+			case 0:
+				$_SESSION['error_message'] = ERR_MISSING_FIELDS;
+				break;
+			case 1:
+				$_SESSION['error_message'] = ERR_INVALID_VIDEO_FILE;
+				break;
+			case 2:
+				$_SESSION['error_message'] = ERR_VIDEO_TOO_LARGE;
+				break;
+			case 3:
+				$_SESSION['error_message'] = ERR_MISSING_AGREEMENT;
+				break;
+			case 4:
+				$_SESSION['error_message'] = ERR_UPLOAD;
+				break;
+			default:
+				$_SESSION['error_message'] = "Something went wrong, and no, I haven't a clue what it was.";
+				break;
+		}
+		
+	}
+	
+	else{
+	
+		//	Upload Video
+		
+		$error_count = 0;
+		
+		//	Get form data.
+		\SYSTEM\LOG("INFO", "Fetching video upload form data...");
+		$title = $description = "";
+		GET_FORM_DATA($title, $description) ? \SYSTEM\LOG("INFO", "... [OK]") : \SYSTEM\LOG("ERROR", "... [FAILED]");
+		
+		//	-------------------------------------------------
+		
+		//	Get the original filename.
+		$original_filename = $_FILES["v"]["name"];
+		$original_file_extension = '';
+		$video_url = VIDEO_HTML_URL;
+		
+		//	Get the file extension using the power of REGEX.
+		//preg_match("|\.([a-z0-9]{2,4})$|i", $original_filename, $original_file_extension);
+		
+		//	Make the extension lowercase for consistency.
+		//$original_file_extension = strtolower($original_file_extension);
+		
+		//	Get video extension.
+		$original_file_extension = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+		
+		\SYSTEM\LOG("INFO", "Generating video-id...");
+		
+		//	Generate video id.
+		$video_id = GENERATE_UNIQUE_VIDEO_ID();
+		
+		\SYSTEM\LOG("INFO", "Video ID generated (" . $video_id . ").");
+		
+		//	Generate video file name for the server.
+		//$video_file = VIDEO_UPLOAD_PATH . "\\" . $video_id . "." . $original_file_extension;
+		$video_file = VIDEO_UPLOAD_PATH . "/" . $video_id . "." . $original_file_extension;
+		
+		\SYSTEM\LOG("INFO", "Configuring upload path (" . $video_file . ")...");
+		
+		//	Check if file exists.
+		if (file_exists($video_file)){
+			
+			\SYSTEM\LOG("ERROR", "... [FAILED]");
+			\SYSTEM\LOG("ERROR", "Video already exists!");
+			$video_upload_result = 1;
+			$error_count++;
+		}
+		else
+				\SYSTEM\LOG("INFO", "... [OK]");
+		
+		//	If no issues, try uploading video.
+		if ($error_count == 0){
+			
+			\SYSTEM\LOG("INFO", "Attempting video upload...");
+			
+			if (move_uploaded_file($_FILES["v"]["tmp_name"], $video_file)){
+				
+				\SYSTEM\LOG("INFO", "... [OK]");
+				$video_upload_result = 0;
+				$video_url .= "/" . $video_id . "." . $original_file_extension;
+			}
+			
+			else{
+				
+				\SYSTEM\LOG("ERROR", "... [FAILED]");
+			}
+		}
+		
+		//	-------------------------------------------------
+		switch($video_upload_result){
+			
+			case 0:	//	Success.
+				$_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your video has been uploaded. Click the link below to watch it:<br> <a href=\"" . $video_url . "\">" . $video_url . "</a></h4>";
+				$_SESSION['error_message_api'] = "Video upload successful.";
+				break;
+			case 1:	//	Video already exists.
+				$error_count++;
+				$_SESSION['error_message'] = "<h3 style=\"color:rgb(180,0,0);\">Sorry!</h3><h4 style=\"color:rgb(180,0,0);\"> A video with this ID already exists. Please try again later.</h4>";
+				$_SESSION['error_message_api'] = "A video with this ID already exists.";
+				break;
+			default:	//	General error.
+				$error_count++;
+				$_SESSION['error_message'] = "<h3 style=\"color:rgb(180,0,0);\">Sorry!</h3><h4 style=\"color:rgb(180,0,0);\"> Video upload failed due to a general server error. Please try again later.</h4>";
+				$_SESSION['error_message_api'] = "Video upload failed due to a general server error. Please try again later.";
+				break;
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		// $_SESSION['error_message'] = "<h3 style=\"color:rgb(0,180,0);\">Success!</h3><h4 style=\"color:rgb(0,180,0);\"> Your account has been (hypothetically) created.<br>Hypothetically, you will be able to click <a href=\"#\">here</a> to login.</h4>";
+ 
+ 
+	}
+	
+	//	API Requests
+	//	------------------------------------------------------------------- BEGIN API REQUEST PROCEDURES
+	
+	/*
+	#####################################################################################
+	
+	To issue an API request to REGISTER.PHP, send the following (additional) parameters:
+	
+		&api=1&k=XXXXX
+	
+	where XXXXX is the API Key defined by the API_KEY constant at the top of this file.
+	For example, if the API_KEY constant is "12345", you would send the following:
+	
+		&api=1&k=12345
+		
+	Full request example:
+	
+	https://cse442.dbmxpca.com/register.php?email=test@domain.com&username=testuser579&password1=123456&password2=123456&api=1&k=12345
+	
+	#####################################################################################
+	*/
+	
+	/*
+	
+	if (isset($_REQUEST['api'])){
+		
+		\SYSTEM\LOG("INFO", "Possible API request detected.");
+		
+		//	Set JSON page/content type and instantiate the JSON object.
+		header('Content-Type: application/json');
+		$j = new \stdClass();
+		
+		$j->success = false;
+		$j->error_code = -5;
+		$j->error_message = "No data provided.";
+		
+		\SYSTEM\LOG("INFO", "Checking data (Step 1 of 3)...");
+		
+		if (!strcmp($_REQUEST['api'], "1") || ($_REQUEST['api'] === 1)){
+			
+			\SYSTEM\LOG("INFO", "Checking data (Step 2 of 3)...");
+			
+			//	Verify API Key
+			if (isset($_REQUEST['k'])){
+				
+				\SYSTEM\LOG("INFO", "Checking data (Step 3 of 3)...");
+				
+				if (!strcmp($_REQUEST['k'], API_KEY)){
+					
+					\SYSTEM\LOG("INFO", "Data successfully verified.");
+					
+					if ($error_count == 0 && $video_upload_result == 0)
+						$j->success = true;
+					else
+						$j->success = false;
+					
+					//	Error Code
+					$j->error_code = $video_upload_result;
+					
+					//	Error Message
+					$j->error_message = $_SESSION['error_message_api'];
+					$j->error_message_frontend = $_SESSION['error_message'];
+				}
+				
+				//	Invalid API Key
+				else{
+					
+					\SYSTEM\LOG("ERROR", "Data verification failed. Provided API Key is invalid.");
+					
+					$j->success = false;
+					
+					//	Error Code
+					$j->error_code = -2;
+					
+					//	Error Message
+					$j->error_message = "Invalid API Key";
+					$j->error_message_frontend = null;
+				}
+			}
+			
+			//	Missing API Key
+			else{
+				
+				\SYSTEM\LOG("ERROR", "Data verification failed. Required API Key is missing.");
+				
+				$j->success = false;
+				
+				//	Error Code
+				$j->error_code = -1;
+				
+				//	Error Message
+				$j->error_message = "Missing API Key";
+			}
+		}
+		
+		echo json_encode($j);
+		
+		\SYSTEM\LOG("INFO", "End of API request.");
+		
+		if ($error_count == 0)
+			exit(0);
+			
+		exit(1);
+	}
+	
+	*/
+	
+	//	------------------------------------------------------------------- END API REQUESTS PROCEDURES
+	
+	//	Normal (Front-End) Request
+	echo $html_begin;
+	echo $form_upload;
+	
+	if (isset($_SESSION['error_message'])){
+		
+		echo $html_error_begin;
+		echo $_SESSION['error_message'];
+		echo $html_error_end;
+	}
+	
+	echo $html_end;
+	
+	exit(0);	
+}
+
+else{
+	
+	echo $html_begin;
+	echo $form_upload;
+	echo $html_end;
+}
+
 
 
 
