@@ -216,6 +216,99 @@ else{
 	';
 }
 
+//	FUNCTIONS
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+//	-------------------------------------------------------------------------------------
+
+
+
+//	@summary	Checks if a form was submitted with any data. Does not check validity of input.
+//	@return		Returns true if form was submitted with any data.
+function WAS_FORM_SUBMITTED(){
+	
+	if (
+		isset($_FILES['v']) ||
+		isset($_REQUEST['agree'])
+		) return true;
+		return false;
+}
+
+
+
+//	@summary	Checks if submitted form data is valid.
+//	@return		Returns true if form was submitted with valid data.
+//	@$error		This return var indicates reason for invalid data:
+//				0 = missing/blank fields; 1 = invalid video file; 2 = video too large;
+//				3 = did not agree to terms and conditions; 4 = upload error.
+function IS_FORM_DATA_VALID(&$error){	
+	
+	//	Ensure fields are set and not blank.
+	if (!isset($_FILES['v']) || empty($_FILES['v']) ||
+		!isset($_REQUEST['agree']) || empty($_REQUEST['agree'])){
+		
+		$error = 0;
+		return false;
+	}
+	
+	//	Check if user agrees to TAC.
+	if ($_REQUEST['agree'] != 1 || $_REQUEST['agree'] != "1"){
+		
+		$error = 3;
+		return false;
+	}
+	
+	//	Get the original filename.
+	$original_filename = $_FILES["v"]["name"];
+	$original_file_extension = '';
+	
+	\SYSTEM\LOG("DEBUG", '$_FILES["v"]["name"] = ' . $_FILES["v"]["name"] . '.');
+	\SYSTEM\LOG("DEBUG", '$_FILES["v"]["tmp_name"] = ' . $_FILES["v"]["tmp_name"] . '.');
+	\SYSTEM\LOG("DEBUG", '$_FILES["v"]["error"] = ' . $_FILES["v"]["error"] . '.');
+	
+	//	Scratch that, fuck it-- doesn't work. Might as well use the native shit anyway.
+	//	Get the file extension using the power of REGEX.
+	//preg_match("|\.([a-z0-9]{2,4})$|i", $original_filename, $original_file_extension);
+	
+	//	Make the extension lowercase for consistency.
+	//$original_file_extension = strtolower($original_file_extension);
+	
+	$original_file_extension = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+	
+	
+	
+	\SYSTEM\LOG("INFO", "Extension of attempted upload is \"." . $original_file_extension . "\".");
+	
+	//	Make a copy of ALLOWED_EXTENSIONS and make them all lowercase for consistency.
+	$allowed_extensions = array_map('strtolower', ALLOWED_EXTENSIONS);
+	
+	//	Check if the extension is allowed.
+	if (!in_array($original_file_extension, $allowed_extensions)){
+		
+		$error = 1;
+		return false;
+	}
+	
+	//	Check file size.
+	$original_file_size = $_FILES["v"]["size"];
+	
+	if ($original_file_size > MAX_VIDEO_SIZE){
+		
+		$error = 2;
+		return false;
+	}
+	
+	//	Check file error code.
+	$file_error = $_FILES["v"]["error"];	
+	if ($file_error == UPLOAD_ERR_OK)
+		return true;
+	
+	$error = 4;
+	return false;
+}
+
+
 
 
 
