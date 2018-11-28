@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     export default {
         name: "Home",
         data() {
@@ -45,8 +46,16 @@
                 $('#overlay').fadeOut(250);
             }
         },
+        computed: {
+            ...mapState(['user'])
+        },
         mounted() {
             $('#overlay').hide();
+        },
+        created() {
+            if(this.user.username === undefined) {
+                this.$router.push('/login');
+            }
         }
     }
 </script>

@@ -13,8 +13,17 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     export default {
-        name: "Upload"
+        name: "Upload",
+        computed: {
+            ...mapState(['user'])
+        },
+        created() {
+            if(this.user.username === undefined) {
+                this.$router.push('/login');
+            }
+        }
     }
 </script>
 
