@@ -3,6 +3,7 @@
     
  <div class="body">
      <h1> Kyros</h1>
+     
     <div class = "Topbar">
         <ul>
         <li class="but"><button v-on:click="home" class="home">Home</button></li>
@@ -14,7 +15,7 @@
 
     <div class="row">
   <div class="side">
-      <h2>Username</h2>
+      <h1>{{this.user.username}}</h1>
       <h5>Profile pic:</h5>
       <div class="profpic" style="height:200px;"><img src="@/assets/Profpic.png" class="prof"></div>
       <h3>About me</h3>
@@ -37,12 +38,16 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: "Profile",
   methods: {
     home: function(event) {
       event.preventDefault();
       this.$router.push("/home");
+    },
+    computed: {
+        ...mapState(['user'])
     }
   }
 };
