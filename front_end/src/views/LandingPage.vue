@@ -36,8 +36,17 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     export default {
-        name: "LandingPage"
+        name: "LandingPage",
+        computed: {
+            ...mapState(['user'])
+        },
+        created() {
+            if(this.user.username !== undefined) {
+                this.$router.push('/home');
+            }
+        }
     }
 </script>
 

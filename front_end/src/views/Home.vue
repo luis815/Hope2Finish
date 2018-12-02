@@ -30,6 +30,7 @@
 
 <script>
     import KyrosBar from "../components/KyrosBar"
+    import {mapState} from 'vuex'
     export default {
         name: "Home",
         components: {KyrosBar},
@@ -48,8 +49,16 @@
                 $('#overlay').fadeOut(250);
             }
         },
+        computed: {
+            ...mapState(['user'])
+        },
         mounted() {
             $('#overlay').hide();
+        },
+        created() {
+            if(this.user.username === undefined) {
+                this.$router.push('/login');
+            }
         }
     }
 </script>
