@@ -30,6 +30,7 @@
 
 <script>
     import KyrosBar from "../components/KyrosBar"
+    import {mapState} from 'vuex'
     export default {
         name: "Home",
         components: {KyrosBar},
