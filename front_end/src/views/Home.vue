@@ -1,5 +1,6 @@
 <template>
     <div id="home" class="text-center text-light bg-dark">
+        <KyrosBar/>
         <h1>Kyros</h1>
         <div>
             <input type="text" placeholder="Search..">
@@ -28,8 +29,10 @@
 </template>
 
 <script>
+    import KyrosBar from "../components/KyrosBar"
     export default {
         name: "Home",
+        components: {KyrosBar},
         data() {
             return {
                 urls: ['I7LJIuB2CHE', 'ctx4YBEdOxo', 'vMPR7k9DWlw', 'u5V_VzRrSBI'],

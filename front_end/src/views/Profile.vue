@@ -2,12 +2,10 @@
 <div>
     
  <div class="body">
+     <KyrosBar/>
      <h1> Kyros</h1>
     <div class = "Topbar">
-        <ul>
-        <li class="but"><button v-on:click="home" class="home">Home</button></li>
-        <li class="search"><input type="text" placeholder="Search.." class="sear"></li>
-        
+        <input type="text" placeholder="Search..">
         <!-- <li class= "profpic"><img src="@/assets/Profpic.png" class="prof"></li> -->
         </ul>
     </div>
@@ -37,9 +35,11 @@
 </template>
 
 <script>
+    import KyrosBar from "../components/KyrosBar"
 export default {
   name: "Profile",
-  methods: {
+    components: {KyrosBar},
+    methods: {
     home: function(event) {
       event.preventDefault();
       this.$router.push("/home");
@@ -75,14 +75,16 @@ export default {
 
 .side {
     flex: 20%;
-    background-color: #f1f1f1;
+    background-color: rgb(52,58,64);
     padding: 20px;
+    color: white;
 }
 
 .main {   
     flex: 70%;
-    background-color: white;
+    background-color: rgb(52,58,64);
     padding: 20px;
+    color: white;
 }
 
 .Topbar ul {
@@ -92,12 +94,15 @@ export default {
   border: solid;
   text-align: center;
   overflow: hidden;
-  background-color:aquamarine;
+  background-color: rgb(52,58,64);
+  color: white;
+
 }
 .Topbar {
   width: 100%;
   height: 50px;
   list-style: none;
+    color: white;
 }
 
 .Topbar li {
@@ -107,6 +112,7 @@ export default {
   font-weight: bold;
   height: 100%;
   padding: 1px 3px;
+    color: white;
  
 }
 
@@ -114,5 +120,7 @@ export default {
   margin: 0;
   padding: 0;
   text-align: center;
+    background-color: rgb(52,58,64);
+    color: white;
 }
 </style>
