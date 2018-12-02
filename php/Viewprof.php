@@ -1,8 +1,8 @@
 
 <?php
-if (isset($_POST["submit"])) {
-    $username = htmlspecialchars($_POST['username']);
-    
+if (isset($_REQUEST['username'])) {
+    $username = 'username';
+    //http://localhost:3000/php/Viewprof.php?username=Justin
     
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
