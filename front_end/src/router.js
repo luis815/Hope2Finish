@@ -9,6 +9,7 @@ import Home from './views/Home.vue'
 import Upload from './views/Upload.vue'
 import Watch from './views/Watch.vue'
 import Kyros404 from './views/Kyros404'
+import Search from './views/Search.vue'
 
 Vue.use(Router);
 
@@ -55,6 +56,11 @@ export default new Router({
             path: '/sample-home',
             name: 'sample-home',
             component: SampleHome
+        },
+        {
+            path: '/search',
+            name: 'search',
+            component: Search
         },
         {
             path: '/sample-about',

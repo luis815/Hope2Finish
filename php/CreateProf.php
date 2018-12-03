@@ -150,4 +150,96 @@ input {
 </style>
 </html>';
 }
+else if (isset($_POST["update"])) {
+$username = htmlspecialchars($_POST['username']);
+$displayName = htmlspecialchars($_POST['name']);
+$email = htmlspecialchars($_POST['email']);
+$DOB = htmlspecialchars($_POST['dob']);
+$About = htmlspecialchars($_POST['about']);
+    echo '
+
+<html>
+<div class = header>
+<h1> <strong> Kyros </strong></h1>
+</div>   
+    <div class="body">
+  
+    <div class = "Topbar">  
+    <form method="POST" action="SearchUser.php">
+            <button type = "back"  class="home" name= "back">Back</button>
+            </form>
+        </div>
+        
+        <br>
+
+    <div>
+        <form method="POST" action= "ProfileSubmit.php">
+            <fieldset>
+                <legend><h3>Personal Info:</h3></legend>
+                <label class = "infield">Username:</label> <input readonly type="text" name = "username"  value = "'. $username . '"><br>
+                <label class = "infield">Name:</label> <input type="text" name = "name"  value = "'. $displayName . '"><br>
+                <label class = "infield">Email:</label> <input name = "email" id = "email" type="text"  value = "'. $email . '"><br>
+                <label class = "infield">Date of birth:</label> <input type="text" name = "dob"  value = "'. $DOB . '"><br>
+                <label class = "infield">About me: </label><br>
+                <textarea rows="4" cols="50" input type="text" name = "about">'. $About . '</textarea><br>
+                <button type = "submit" name = "submit" class="Save">Save</button><br>
+            </fieldset>
+        </form>
+    </div>
+  </div>
+</div>
+    
+
+
+
+<style scoped>
+.home {
+    background-color: rgba(0, 119, 255, 0.712);
+    border: solid;
+    color: black;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10 7;
+    float: left;
+    display: inline-block;
+  
+  }
+  .home:hover {
+  
+    background-color: cadetblue;
+  }
+
+.infield{
+    display: inline-block;
+    clear: left;
+    width: 150px;
+    text-align: left;
+}
+input {
+  display: inline-block;
+}
+
+
+.Topbar {
+    width: 100%;
+    height: 6%;
+    border: solid;
+    text-align: center;
+    overflow: hidden;
+    background-color:aquamarine;
+  }
+  
+
+  .header{
+    height: 8%;
+    text-align: center;
+   
+  }
+
+
+
+</style>
+</html>';
+}
 ?>

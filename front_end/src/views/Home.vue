@@ -1,5 +1,6 @@
 <template>
     <div id="home" class="text-center text-light bg-dark">
+        <KyrosBar/>
         <h1>Kyros</h1>
         <div>
             <input type="text" placeholder="Search..">
@@ -28,8 +29,11 @@
 </template>
 
 <script>
+    import KyrosBar from "../components/KyrosBar"
+    import {mapState} from 'vuex'
     export default {
         name: "Home",
+        components: {KyrosBar},
         data() {
             return {
                 urls: ['I7LJIuB2CHE', 'ctx4YBEdOxo', 'vMPR7k9DWlw', 'u5V_VzRrSBI'],
@@ -45,8 +49,16 @@
                 $('#overlay').fadeOut(250);
             }
         },
+        computed: {
+            ...mapState(['user'])
+        },
         mounted() {
             $('#overlay').hide();
+        },
+        created() {
+            if(this.user.username === undefined) {
+                this.$router.push('/login');
+            }
         }
     }
 </script>

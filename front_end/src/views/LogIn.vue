@@ -99,6 +99,11 @@
                 }
             },
             ...mapState(['user'])
+        },
+        created() {
+            if(this.user.username !== undefined) {
+                this.$router.push('/home');
+            }
         }
     }
 </script>
