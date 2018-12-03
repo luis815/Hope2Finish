@@ -22,6 +22,9 @@
                             logout
                         </a>
                     </li>
+                    <li class="nav-item">
+                         <router-link class="nav-link" to="/search">Search</router-link>
+                    </li>
                 </ul>
             </div>
         </nav>
