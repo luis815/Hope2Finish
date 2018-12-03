@@ -11,8 +11,16 @@
                     <li class="nav-item">
                         <router-link class="nav-link" to="/home">Home</router-link>
                     </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" to="/upload">Upload</router-link>
+                    </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/profile">Profile</router-link>
+                        <router-link class="nav-link" to="/profile">{{this.user.username}}</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <a id="logout" class="nav-link" v-on:click="logout">
+                            logout
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -21,13 +29,29 @@
 </template>
 
 <script>
+    import {mapState, mapMutations} from 'vuex'
     export default {
-        name: "KyrosBar"
+        name: "KyrosBar", 
+        computed:{
+            ...mapState(['user'])
+        },
+        methods:{
+            logout(){
+                this.setUser({});
+                this.$router.push('/')
+
+            },
+            ...mapMutations(['setUser'])
+        }
     }
 </script>
 
 <style scoped>
     #kyros-bar {
 
+
+    }
+    #logout {
+        cursor: pointer;
     }
 </style>
